@@ -1,7 +1,8 @@
 # OCR相关依赖
-paddlepaddle>=2.4.0
-paddleocr>=2.7.0
-paddlex>=3.0.0
+# 固定 CPU 版本（如使用 GPU，请改为对应的 paddlepaddle-gpu 3.x 版本）
+paddlepaddle>=3.1.1
+paddleocr==3.2.0
+paddlex[ocr]>=3.2.1
 
 # 数据处理
 pandas>=1.5.0
@@ -19,7 +20,7 @@ pathlib2>=2.3.0
 beautifulsoup4>=4.11.0
 lxml>=4.9.0
 
-# 可选：GPU加速（如果有NVIDIA GPU）
-# paddlepaddle-gpu>=2.4.0
+# 可选：GPU加速（如果有NVIDIA GPU），请按你的 CUDA 版本选择，例如：
+# paddlepaddle-gpu==3.1.1.post120  （示例，需按实际 CUDA 版本调整）
 
 
