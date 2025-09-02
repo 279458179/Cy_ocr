@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-从output目录下的JSON文件中提取rec_texts字段数据，生成Excel表格
+从output目录下的JSON文件中提取rec_texts字段数据, 生成Excel表格
 """
 
 import json
@@ -11,7 +11,7 @@ from pathlib import Path
 
 def parse_rec_texts(rec_texts):
     """
-    解析rec_texts列表，将键值对提取为字典
+    解析rec_texts列表, 将键值对提取为字典
     """
     data = {}
     i = 0
@@ -19,7 +19,7 @@ def parse_rec_texts(rec_texts):
         key = rec_texts[i]
         value = rec_texts[i + 1]
         
-        # 跳过纯数字的项（如"1", "3"等）
+        # 跳过纯数字的项(如"1", "3"等)
         if key.isdigit():
             i += 1
             continue
@@ -36,20 +36,20 @@ def process_json_files():
     output_dir = Path("output")
     
     if not output_dir.exists():
-        print("output目录不存在！")
+        print("output目录不存在!")
         return
     
     # 存储所有提取的数据
     all_data = []
     
-    # 递归遍历output目录下的所有json文件（包括子目录）
+    # 递归遍历output目录下的所有json文件(包括子目录)
     json_files = list(output_dir.rglob("*.json"))
     
     if not json_files:
-        print("output目录下没有找到JSON文件！")
+        print("output目录下没有找到JSON文件!")
         return
     
-    print(f"找到 {len(json_files)} 个JSON文件，开始处理...")
+    print(f"找到 {len(json_files)} 个JSON文件, 开始处理...")
     
     for json_file in json_files:
         relative_path = json_file.relative_to(output_dir)
@@ -59,7 +59,7 @@ def process_json_files():
             with open(json_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
             
-            # 提取rec_texts字段（可能嵌套在overall_ocr_res中）
+            # 提取rec_texts字段(可能嵌套在overall_ocr_res中)
             rec_texts = None
             
             # 首先检查根层级
@@ -72,7 +72,7 @@ def process_json_files():
             if rec_texts:
                 parsed_data = parse_rec_texts(rec_texts)
                 
-                # 添加文件路径信息（包含相对路径）
+                # 添加文件路径信息(包含相对路径)
                 parsed_data['源文件路径'] = str(json_file.relative_to(output_dir))
                 
                 all_data.append(parsed_data)
@@ -86,13 +86,13 @@ def process_json_files():
             print(f"  错误: 处理 {relative_path} 时出错 - {e}")
     
     if not all_data:
-        print("没有成功提取到任何数据！")
+        print("没有成功提取到任何数据!")
         return
     
     # 创建DataFrame
     df = pd.DataFrame(all_data)
     
-    # 定义列的顺序（根据图片中的表头）
+    # 定义列的顺序(根据图片中的表头)
     desired_columns = [
         '号牌种类', '号牌号码', '车辆类型', '使用性质', '车辆品牌',
         '初次登记日期', '有效期至', '强制报废期止', '车辆识别代号',
@@ -101,7 +101,7 @@ def process_json_files():
         '所有人', '联系地址'
     ]
     
-    # 重新排列列的顺序，确保所有列都存在
+    # 重新排列列的顺序, 确保所有列都存在
     existing_columns = [col for col in desired_columns if col in df.columns]
     missing_columns = [col for col in desired_columns if col not in df.columns]
     
@@ -116,7 +116,7 @@ def process_json_files():
     output_file = "车辆信息提取结果.xlsx"
     try:
         df.to_excel(output_file, index=False, engine='openpyxl')
-        print(f"\n数据提取完成！")
+        print(f"\n数据提取完成!")
         print(f"总共处理了 {len(all_data)} 条记录")
         print(f"结果已保存到: {output_file}")
         
@@ -153,7 +153,7 @@ def main():
         return
     
     process_json_files()
-    print("\n程序执行完成！")
+    print("\n程序执行完成!")
 
 if __name__ == "__main__":
     main()
